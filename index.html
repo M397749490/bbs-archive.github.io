@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCBBS 复活赛</title>
+    <style>
+        .bg {
+            background-image: url('src/body_bg.jpg');
+            position: fixed;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .container {
+            margin: auto;
+            max-width: 80%;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 5px 0;
+            margin-bottom: 8px;
+            font-size: 5em;
+            border: 3px solid rgb(65, 38, 34);
+            background-color: #ffffff89;
+            border-radius: 5px;
+            padding: 0.25rem 0.75rem;
+        }
+
+        .notice {
+            padding: 1em;
+            background-color: rgb(234, 47, 19);
+            color: aliceblue;
+        }
+
+        .tabs .tab {
+            display: none;
+        }
+
+        .tabs .tab.active {
+            display: flex;
+        }
+
+        .search-container {
+            width: 80%;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-direction: row;
+            font-size: large;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-tabs .nav-item {
+            background-color: #ffffff89;
+            margin-right: 0.3em;
+            border: 2px solid #333;
+            border-radius: 5px;
+            padding: 0.2rem 0.8rem;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            color: #444;
+            background-color: transparent;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background-color: #333;
+        }
+
+        .tabs {
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+        }
+
+        .input-group input {
+            background: #ffffff89;
+            flex: auto;
+            width: 1px;
+            font:
+                1.4em/1.5em "handwriting",
+                cursive,
+                sans-serif;
+            border: 2px solid #333;
+            border-radius: 5px 0 0 5px;
+            padding: 0 10px;
+            margin: 0;
+            height: 3rem;
+        }
+
+        .input-group button {
+            background: #ffffff89;
+            width: 4.8rem;
+            flex-shrink: 0;
+            padding: 0 10px;
+            margin: 0;
+            font: bold 1.4em/1.5em sans-serif;
+            border: 2px solid #333;
+            border-left: 0;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .input-group button:hover,
+        .input-group button:focus {
+            background: #000;
+            color: #fff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                margin-top: 0;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .nav-tabs {
+                justify-content: center;
+            }
+        }
+
+        @media only screen and (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                max-width: 90%;
+                align-items: center;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            h1 {
+                margin: 2rem 0;
+            }
+        }
+
+        @media only screen and (min-width: 1025px) {
+            .container {
+                max-width: 80%;
+                align-items: center;
+            }
+
+            h1 {
+                margin: 4.5rem 0;
+            }
+
+            .search-container {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <h1>MCBBS 复活赛</h1>
+        <div class="notice hidden"></div>
+        <div class="search-container">
+            <div class="nav-tabs">
+                <div class="nav-item active">搜索</div>
+                <div class="nav-item">跳转</div>
+            </div>
+            <div class="tabs">
+                <div class="tab active input-group">
+                    <input id="search-input" type="text" placeholder="在此搜索">
+                    <button class="btn-search">搜索</button>
+                </div>
+                <div class="tab input-group">
+                    <input id="jump-input" type="text" placeholder="输入 tid 进行跳转">
+                    <button class="btn-jump">跳转</button>
+                </div>
+            </div>
+        </div>
+        <p>【瑞典路透社1145年1月4日讯】近日，MCBBS 在与科比进行的复活赛中胜出，现在牢玩家们可以在这个网站上搜索 MCBBS 的帖子记录。致敬传奇论坛 MCBBS！</p>
+        <img style="width: 100%;max-width: 100%;" src="src/ed85e90.jpg" />
+    </div>
+    <script>
+        const jumpTo = (URL) => {
+            window.location.assign(URL);
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const navItems = document.querySelectorAll('.search-container .nav-tabs .nav-item');
+            const tabs = document.querySelectorAll('.search-container .tabs .tab');
+
+            navItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    navItems.forEach(item => item.classList.remove('active'))
+                    tabs.forEach(tab => tab.classList.remove('active'));
+
+                    item.classList.add('active');
+                    tabs[index].classList.add('active');
+                })
+            })
+
+            const btnSearch = document.querySelector('.btn-search');
+            const btnJump = document.querySelector('.btn-jump');
+            const notice = document.querySelector('.notice');
+
+            const jumpSearch = () => {
+                const input = btnSearch.parentElement.querySelector('#search-input');
+                const text = input.value;
+                const param = new URLSearchParams();
+                param.append('s', text);
+                const URL = `search.html?${param.toString()}`;
+                jumpTo(URL);
+            };
+            btnSearch.addEventListener('click', jumpSearch);
+            document.querySelector('#search-input').onkeydown =  (event) => {
+                if (event.key === 'Enter') {
+                    jumpSearch();
+                }
+            };;
+
+            const jumpThread =  () => {
+                const input = btnJump.parentElement.querySelector('#jump-input');
+                const text = input.value;
+                if (!/^[0-9]+$/.test(text)) {
+                    notice.classList.remove('hidden')
+                    notice.textContent = "TID 必须是纯数字";
+                    return;
+                }
+                const URL = `thread.html?t=${text}`;
+                jumpTo(URL)
+            }
+            btnJump.addEventListener('click', jumpThread);
+            document.querySelector('#jump-input').onkeydown =  (event) => {
+                if (event.key === 'Enter') {
+                    jumpThread();
+                }
+            };
+            
+        });
+
+    </script>
+</body>
+
+</html>
