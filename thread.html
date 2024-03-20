@@ -22,9 +22,10 @@
         }
 
         #slot {
-            overflow-x: scroll;
+            min-height: calc(100vh - 1.2rem);
+            overflow-x: visible;
             margin: 0 auto;
-            padding: 20px 45px;
+            padding: 20px 42px;
             box-sizing: border-box;
             background-color: rgba(255, 255, 255, 0.8);
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
@@ -58,7 +59,7 @@
         <div class="loading-icon" style="margin-left: auto;margin-right: auto; margin-bottom: 10px;"></div>
         加载中...<br>因为 jsdelivr CDN 受到神秘力量干涉<br>最好使用魔法方式连接
     </div>
-    <div id="slot" style="min-height: 100vh;width: 100vw;"></div>
+    <div id="slot"></div>
     <script>
         (async () => {
             const protocal = 'https';
