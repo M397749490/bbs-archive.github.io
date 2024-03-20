@@ -4,136 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>Search - bbs-archive</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            padding: 0;
-            margin: 0;
+        .search-form {
+            margin-top: 0.3rem;
         }
 
-        .bg {
-            background-image: url('src/body_bg.jpg');
-            position: fixed;
-            z-index: -1;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+        .search-form label {
+            margin-right: 10px;
         }
 
-        .loading {
-            margin: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .input-group {
-            margin-top: 0.25rem;
-            display: flex;
-            width: 100%;
-            flex-direction: row;
-        }
-
-        .input-group input {
-            background: #ffffffdb;
-            flex: auto;
-            width: 1px;
-            font:
-                1.4em/1.5em "handwriting",
-                cursive,
-                sans-serif;
-            border: 2px solid #333;
-            border-radius: 5px 0 0 5px;
-            padding: 0 10px;
-            margin: 0;
-            height: 3rem;
-        }
-
-        .input-group button {
-            background: #ffffffdb;
-            width: 4.8rem;
-            flex-shrink: 0;
-            padding: 0 10px;
-            margin: 0;
-            font: bold 1.4em/1.5em sans-serif;
-            border: 2px solid #333;
-            border-left: 0;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-        }
-
-        .input-group button:hover,
-        .input-group button:focus {
-            background: #000;
-            color: #fff;
-        }
-
-        .container {
-            margin: 0 auto;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .list-container {
-            display: flex;
-            flex-direction: column;
-            background: #ffffffdb;
-            width: 100%;
-            margin: 0.6rem 0;
+        .search-form .form-control {
+            padding: 5px;
             border-radius: 5px;
-            flex: 1;
+            border: 1px solid #ccc;
+            margin-right: 10px;
         }
 
-        ul.search-list {
-            list-style: none;
-            padding: 0.8rem;
-            margin: 0;
-            margin-left: 0.9rem;
-        }
-
-        .search-list li {
-            margin-bottom: 3rem;
-        }
-
-        .search-list a {
-            color: #3f3f3f;
-        }
-
-        .search-list h3 {
-            font-size: larger;
-        }
-
-        .show-more {
-            margin: auto auto 1rem auto;
-        }
-
-        button#show-more {
-            background: #ffffff00;
-            flex-shrink: 0;
-            padding: 5px 10px;
-            margin: 0;
-            font: bold 1.4em/1.5em sans-serif;
-            border: 2px solid #333;
+        .search-form .btn-submit {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
-
         }
 
-        button#show-more:hover,
-        button#show-more:focus {
-            background: #000;
-            color: #fff;
+        .search-form .btn-submit:hover {
+            background-color: #0056b3;
         }
 
+        /* 响应式样式 */
+        @media only screen and (max-width: 768px) {
+
+            .search-form .form-control,
+            .search-form .btn-submit {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
 
         @media only screen and (max-width: 768px) {
             .container {
                 max-width: 100%;
                 margin-top: 0;
-                padding: 0 1rem;
+            }
+
+            .search-list {
+                margin-left: 0;
             }
         }
 
@@ -150,34 +71,6 @@
                 margin: 0 0 auto 10rem;
             }
         }
-
-        .hidden {
-            display: none;
-        }
-
-        .loading-icon {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #333;
-            /* Change color as needed */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 
@@ -190,12 +83,26 @@
     </div>
     <div id="loaded" class="container hidden">
         <header>
-            <img style="height: 100px;margin-top: 5px;max-width: 100%;" src="src/logo.png" />
+            <img onclick="window.location.assign('/')"
+                style="height: 100px;margin-top: 5px;max-width: 100%;cursor: pointer;" src="src/logo.png" />
             <div class="tab active input-group">
                 <input type="text" placeholder="在此搜索（目前仅支持搜索标题哦）" id="search-input">
                 <button class="btn-search" id="btn-search">搜索</button>
             </div>
         </header>
+        <form id="sort-filter-form" class="search-form">
+            <label for="sort-by">排序方式：</label>
+            <select id="sort-by" name="sort-by" class="form-control">
+                <option disabled selected value> -- 请选择 -- </option>
+                <option value="time">按时间排序</option>
+                <option value="replies">按回复数排序</option>
+            </select>
+            <label for="sort-order">排序顺序：</label>
+            <select id="sort-order" name="sort-order" class="form-control">
+                <option value="desc">降序</option>
+                <option value="asc">升序</option>
+            </select>
+        </form>
         <div class="list-container">
             <ul class="search-list" id="search-list">
             </ul>
@@ -204,148 +111,7 @@
             </div>
         </div>
     </div>
-    <script src="src/papaparse.min.js"></script>
-    <script src="src/segmentit.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const TD = {
-                TID: 0,
-                AUTHOR: 1,
-                TIME: 2,
-                TITLE: 3,
-                REPLY: 4
-            };
-            const PER_PAGE = 25;
-            const segmentit = Segmentit.useDefault(new Segmentit.Segment());
-            const protocal = 'https';
-            const upstream = 'bbs-archive.github.io';
-            const upstreamPath = '/src/';
-            // const protocal = 'http'
-            // const upstream = 'localhost:5500'
-            // const upstreamPath = '/static/src/'
-            const fileName = 'mcbbs-brief.csv'
-
-            const urlParams = new URLSearchParams(document.location.search);
-            const searchWord = urlParams.get('s');
-            const wordList = searchWord ? [searchWord, ...segmentit.doSegment(searchWord).map(item => item.w)] : [];
-            const fullpath = `${protocal}://${upstream}${upstreamPath}${fileName}`;
-
-            const noticeEle = document.getElementById('notice');
-            const loadingEle = document.getElementById('loading');
-            const loadedEle = document.getElementById('loaded');
-            const searchListEle = document.getElementById('search-list');
-            const searchInputEle = document.getElementById('search-input');
-
-            searchInputEle.value = searchWord;
-
-            const parseCSV = (fullpath) => {
-                return new Promise((res, rej) => {
-                    Papa.parse(fullpath, {
-                        download: true,
-                        error: function (err, file, inputElem, reason) {
-                            rej(err)
-                        },
-
-                        complete: response => {
-                            res(response.data);
-                        }
-                    })
-                }
-
-                )
-            }
-            const jumpToSearch = () => {
-                window.location.assign(`search.html?s=${searchInputEle.value}`);
-            }
-            document.getElementById('btn-search').addEventListener('click', () => {
-                jumpToSearch();
-            });
-            searchInputEle.onkeydown = (event) => {
-                if (event.key === 'Enter') {
-                    jumpToSearch();
-                }
-            };
-            (async () => {
-                noticeEle.textContent = '正在下载搜索索引文件。\n因为 jsdelivr CDN 受到神秘力量干涉，\n最好使用魔法方式连接';
-                try {
-                    // const response = await fetch(fullpath, {
-                    //     cache: "force-cache"
-                    // });
-                    // if (!response.ok) {
-                    //     throw new Error(`${response.status}: ${response.statusText}`)
-                    // }
-                    // noticeEle.textContent = '正在解析文件。搜索可能需要一点时间，请耐心等待。';
-                    // const csvContent = await response.text();
-                    /** @type {Array<Array<String>>} */
-                    const data = await parseCSV(fullpath);
-                    // const data = Papa.parse(csvContent).data;
-                    noticeEle.textContent = '正在解析文件。搜索可能需要一点时间，请耐心等待。';
-                    data.shift();
-                    const countWord = (row, word) => {
-                        return row[TD.AUTHOR] && row[TD.AUTHOR].includes(word) ||
-                            row[TD.TITLE] && row[TD.TITLE].includes(word)
-                    }
-                    const res = data.filter(row => {
-                        return wordList.some(word => countWord(row, word))
-                    });
-                    res.sort((a, b) => {
-                        const ca = wordList.reduce((total, word) => (countWord(a, word) ? total + 1 : total), 0);
-                        const cb = wordList.reduce((total, word) => (countWord(b, word) ? total + 1 : total), 0);
-                        if (ca > cb) {
-                            return -1;
-                        } else if (ca == cb) {
-                            return 0;
-                        } else {
-                            return 1;
-                        }
-                    })
-                    loadingEle.classList.add('hidden');
-                    loadedEle.classList.remove('hidden');
-
-                    const paging = () => {
-                        searchListEle.append(...res.splice(0, PER_PAGE).map(row => {
-                            const [tid, author, time, title, reply] = row;
-                            const li = document.createElement('li');
-                            const h3 = document.createElement('h3');
-                            const a = document.createElement('a');
-                            a.href = `thread.html?t=${tid}`;
-                            a.textContent = title;;
-                            const p = document.createElement('p')
-                            p.textContent = `作者：${author} | 时间：${(new Date(time * 1000)).toLocaleString()} | 回复数：${reply}`
-                            h3.appendChild(a);
-                            li.appendChild(h3);
-                            li.appendChild(p);
-                            return li;
-                        }));
-                    };
-                    if (!res.length) {
-                        if (!searchWord) {
-                            searchListEle.textContent = '搜到的内容将会在此显示';
-                        } else {
-                            searchListEle.textContent = '暂时没有搜到任何内容哦'
-                        }
-                    }
-                    paging();
-                    const showMoreBtn = document.getElementById('show-more');
-                    if (!res.length) {
-                        showMoreBtn.classList.add('hidden');
-                    }
-                    showMoreBtn.addEventListener('click', () => {
-                        if (res.length) {
-                            paging();
-                        } else {
-                            showMoreBtn.textContent = '已经没有了哦';
-                            showMoreBtn.disabled = true;
-                        }
-                    })
-                } catch (err) {
-                    loadingEle.textContent = err;
-                    return;
-                }
-            })();
-        })
-
-    </script>
+    <script type="module" src="src/search.js"></script>
 </body>
 
 </html>

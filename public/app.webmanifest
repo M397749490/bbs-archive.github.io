@@ -1,0 +1,18 @@
+{
+  "lang": "zh-CN",
+  "name": "MCBBS Archive on Github Pages",
+  "short_name": "MCBBS Archive",
+  "description": "An archive site collects threads of a closed Minecraft fourm in China, MCBBS, allowing us to view.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#000",
+  "background_color": "#000",
+  "icons": [
+    {
+      "src": "/favicon/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ]
+}
